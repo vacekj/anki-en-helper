@@ -20,10 +20,7 @@ async function main() {
 }
 
 async function setupDirStructure() {
-	// TODO: Reimplement with fs-extra and async/await
 	await fse.emptyDir(config.outputDir);
-
-	// recreate directory structure
 	await fse.ensureDir(config.mediaDir);
 }
 
