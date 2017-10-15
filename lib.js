@@ -3,7 +3,6 @@ const jsonfile = require('jsonfile');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const translate = require('google-translate-api');
-const del = require('del');
 const streamToPromise = require('stream-to-promise');
 const pMap = require('p-map');
 const chalk = require('chalk');
@@ -12,19 +11,19 @@ const chalk = require('chalk');
 const config = require('./config/config.js');
 
 async function main() {
-	setupDirStructure();
+	await setupDirStructure();
 	let inputCollection = jsonfile.readFileSync(config.input);
 	let cleanedInput = cleanInput(inputCollection);
 	let output = await processInput(cleanedInput);
 	await writeOutput(output);
 }
 
-function setupDirStructure() {
+async function setupDirStructure() {
+	// TODO: Reimplement with fs-extra and async/await
 	// delete output directory
-	del.sync(config.outputDir + '/');
+
 	// recreate directory structure
-	fs.mkdirSync(config.outputDir);
-	fs.mkdirSync(config.mediaDir);
+
 }
 
 function cleanInput(input) {
