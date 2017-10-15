@@ -63,7 +63,7 @@ async function getData(card) {
 	let definition = $(definitionSelector).first().text();
 
 	// translation
-	let translated = await translate(word, { from: 'es', to: 'cs' });
+	let translated = await translate(word, { from: 'en', to: 'cs' });
 	let translation = translated.text;
 
 	// get example
