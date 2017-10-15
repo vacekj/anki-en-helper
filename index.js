@@ -1,11 +1,10 @@
-
-
 let main = require('./lib');
 
 main().then(() => {
-	console.log('');
+	console.log('Success!');
 	process.exit(0);
 }).catch((e) => {
-	console.log('Error: ' + e.toString());
+	console.log('Error!');
+	console.log(e);
 	process.exit(1);
 });

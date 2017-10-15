@@ -12,15 +12,11 @@ const chalk = require('chalk');
 const config = require('./config/config.js');
 
 async function main() {
-	try {
-		setupDirStructure();
-		let inputCollection = jsonfile.readFileSync(config.input);
-		let cleanedInput = cleanInput(inputCollection);
-		let output = await processInput(cleanedInput);
-		await writeOutput(output);
-	} catch (error) {
-		throw error;
-	}
+	setupDirStructure();
+	let inputCollection = jsonfile.readFileSync(config.input);
+	let cleanedInput = cleanInput(inputCollection);
+	let output = await processInput(cleanedInput);
+	await writeOutput(output);
 }
 
 function setupDirStructure() {
@@ -61,7 +57,7 @@ async function getData(card) {
 
 	// definition
 	const definitionSelector = 'h3.definition';
-	let definition = $(definitionSelector).first().text();
+	let definition = $(definitionSelector).first().contents()[2].data.trim();
 
 	// translation
 	let translated = await translate(word, { from: 'en', to: 'cs' });
@@ -76,8 +72,8 @@ async function getData(card) {
 
 	// audio
 	let audioFileName = word + '.mp3';
-	let audioURL = 'https://audio.vocab.com/1.0/us/' + data_audio + '.mp3';
 	const data_audio = $('a.audio').attr('data-audio');
+	let audioURL = 'https://audio.vocab.com/1.0/us/' + data_audio + '.mp3';
 	let writeStream = fs.createWriteStream(`${config.mediaDir}/${audioFileName}`);
 	request.get(audioURL).pipe(writeStream);
 	await streamToPromise(writeStream);
@@ -95,13 +91,17 @@ async function getData(card) {
 
 async function writeOutput(output) {
 	let stream = fs.createWriteStream(config.outputFile);
+	let promise = streamToPromise(stream);
+	stream.on('close', () => {
+		stream.end();
+	});
 	output.forEach(function (card) {
 		// one line = one card
 		let line = `${card.Word}\t${card.Definition}\t${card.Translation}\t${card.Example}\t${card.Example___}\t${card.Audio}\t\n`;
 		stream.write(line);
 	});
-	stream.end();
-	await streamToPromise(stream);
+	// TODO: investigate promise not resolving
+	await promise;
 }
 
 String.prototype.replaceAll = function (target, replacement) {
