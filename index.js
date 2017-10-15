@@ -56,7 +56,7 @@ async function getData(card) {
 	let page = await request('https://www.vocabulary.com/dictionary/' + word);
 	let $ = cheerio.load(page);
 
-	// TODO: detect network error, then retry 
+	// TODO: detect network error, then retry
 
 	// definition
 	const definitionSelector = 'h3.definition';
