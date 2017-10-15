@@ -89,19 +89,16 @@ async function getData(card) {
 	};
 }
 
-async function writeOutput(output) {
-	let stream = fs.createWriteStream(config.outputFile);
-	let promise = streamToPromise(stream);
-	stream.on('close', () => {
-		stream.end();
+function writeOutput(output) {
+	return new Promise((resolve, reject) => {
+		let stream = fs.createWriteStream(config.outputFile);
+		for (var index = 0; index < output.length; index++) {
+			var card = output[index];
+			let line = `${card.Word}\t${card.Definition}\t${card.Translation}\t${card.Example}\t${card.Example___}\t${card.Audio}\t\n`;
+			stream.write(line);
+		}
+		stream.end(null, resolve);
 	});
-	output.forEach(function (card) {
-		// one line = one card
-		let line = `${card.Word}\t${card.Definition}\t${card.Translation}\t${card.Example}\t${card.Example___}\t${card.Audio}\t\n`;
-		stream.write(line);
-	});
-	// TODO: investigate promise not resolving
-	await promise;
 }
 
 String.prototype.replaceAll = function (target, replacement) {
