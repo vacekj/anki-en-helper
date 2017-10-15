@@ -2,6 +2,7 @@ const request = require('request-promise');
 const jsonfile = require('jsonfile');
 const cheerio = require('cheerio');
 const fs = require('fs');
+const fse = require('fs-extra');
 const translate = require('google-translate-api');
 const streamToPromise = require('stream-to-promise');
 const pMap = require('p-map');
@@ -20,10 +21,10 @@ async function main() {
 
 async function setupDirStructure() {
 	// TODO: Reimplement with fs-extra and async/await
-	// delete output directory
+	await fse.emptyDir(config.outputDir);
 
 	// recreate directory structure
-
+	await fse.ensureDir(config.mediaDir);
 }
 
 function cleanInput(input) {
