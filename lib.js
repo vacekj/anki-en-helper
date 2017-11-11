@@ -26,7 +26,7 @@ async function setupDirStructure() {
 
 function cleanInput(input) {
 	let deUndefinedArray = input.filter((card) => {
-		return card.Word != undefined;
+		return card[config.fields.word] != undefined;
 	});
 	let deDupedArray = removeDuplicates(deUndefinedArray, config.fields.word);
 	return deDupedArray;
