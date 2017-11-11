@@ -65,7 +65,7 @@ async function getData(card) {
 	let example = $(exampleSelector).first().text();
 
 	// generate example___
-	let example___ = example.replaceAll(word, '___');
+	let example___ = StringReplaceAll(example, word, '___');
 
 	// audio
 	let audioFileName = word + '.mp3';
@@ -104,12 +104,12 @@ function tabSeparatedLine(args) {
 	}, '').concat('\n');
 }
 
-String.prototype.replaceAll = function (target, replacement) {
-	return this.split(target).join(replacement);
-};
+function StringReplaceAll(string, target, replacement) {
+	return string.split(target).join(replacement);
+}
 
-function removeDuplicates(myArr, prop) {
-	return myArr.filter((obj, pos, arr) => {
+function removeDuplicates(array, prop) {
+	return array.filter((obj, pos, arr) => {
 		return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
 	});
 }
