@@ -91,11 +91,17 @@ function writeOutput(output) {
 		let stream = fs.createWriteStream(config.outputFile);
 		for (var index = 0; index < output.length; index++) {
 			var card = output[index];
-			let line = `${card.Word}\t${card.Definition}\t${card.Translation}\t${card.Example}\t${card.Example___}\t${card.Audio}\t\n`;
+			let line = tabSeparatedLine(card.Word, card.Definition, card.Translation, card.Example, card.Example___, card.Audio)
 			stream.write(line);
 		}
 		stream.end(null, resolve);
 	});
+}
+
+function tabSeparatedLine(args) {
+	return [...arguments].reduce((line, elem) => {
+		return line += elem.concat('\t');
+	}, '').concat('\n');
 }
 
 String.prototype.replaceAll = function (target, replacement) {
