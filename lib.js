@@ -89,7 +89,7 @@ function writeOutput(output) {
 		let stream = fs.createWriteStream(config.outputFile);
 		for (var index = 0; index < output.length; index++) {
 			var card = output[index];
-			let line = tabSeparatedLine(card.Word, card.Definition, card.Translation, card.Example, card.Example___, card.Audio)
+			let line = tabSeparatedLine(card.Word, card.Definition, card.Translation, card.Example, card.Example___, card.Audio);
 			stream.write(line);
 		}
 		stream.end(null, resolve);
