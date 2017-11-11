@@ -35,10 +35,8 @@ function cleanInput(input) {
 async function processInput(input) {
 	const mapper = async (card) => {
 		let data = await getData(card);
-		let modifiedCard = card;
-		Object.assign(modifiedCard, data);
 		console.log(`Card processed: ${chalk.blue(card[config.fields.word])}`);
-		return modifiedCard;
+		return Object.assign(card, data);
 	};
 
 	let result = await pMap(input, mapper, { concurrency: config.concurrency });
